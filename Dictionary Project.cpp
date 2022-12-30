@@ -1,3 +1,4 @@
+//library used
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,7 +15,7 @@ struct TrieNode {
   TrieNode* children[ALPHABET_SIZE];
   bool isEndOfWord;
   int frequency;
-
+//constructor
   TrieNode() {
     for (int i = 0; i < ALPHABET_SIZE; i++) {
       children[i] = nullptr;
@@ -42,6 +43,7 @@ class Trie {
     }
     current = current->children[index];
   }
+  //set true
   current->isEndOfWord = true;
   current->frequency++;
 }
@@ -65,6 +67,7 @@ class Trie {
   TrieNode* current = root;
   for (char ch : prefix) {
     int index = ch - 'a';
+    //No suggestion is there, not found
     if (current->children[index] == nullptr) {
       cout << "No suggestions" << endl;
       return;
@@ -76,12 +79,13 @@ class Trie {
   priority_queue<pair<int, string>> pq;
   string word = prefix;
   suggestWordsUtil(current, pq, word);
-
- std::cout << std::left << std::setw(15) << "Word" << std::setw(15) << "Frequency" << std::endl;
+  
+ //printing suggestion in table form
+ cout << left << setw(15) << "Word" << setw(15) << "Frequency" << endl;
 while (!pq.empty()) {
-  std::pair<int, std::string> top = pq.top();
+  pair<int, string> top = pq.top();
   pq.pop();
-  std::cout << std::left << std::setw(15) << top.second << std::setw(15) << top.first << std::endl;
+cout << left << setw(15) << top.second << setw(15) << top.first << endl;
 }
  }
 
@@ -93,6 +97,7 @@ while (!pq.empty()) {
 pq.push({node->frequency, word});
 }
 for (int i = 0; i < ALPHABET_SIZE; i++) {
+	//traversing the trie tree
 if (node->children[i] != nullptr) {
 word.push_back(i + 'a');
 suggestWordsUtil(node->children[i], pq, word);
@@ -113,6 +118,8 @@ int main() {
 
   int choice;
   do {
+  	//main Menu
+  	
     cout << "Menu:" << endl;
     cout << "1. Spell check a word" << endl;
     cout << "2. Exit" << endl;
@@ -124,11 +131,13 @@ int main() {
       string input;
       cout << "Enter a word to spell check: ";
       cin >> input;
+      //condition
       if (trie.search(input)) {
         cout << "Correct spelling" << endl;
       } else {
         cout << "Incorrect spelling" << endl;
       }
+      //suggestion called
       trie.suggestWords(input);
     }
   } while (choice != 2);
