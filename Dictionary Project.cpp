@@ -18,7 +18,7 @@ struct TrieNode {
 //constructor
   TrieNode() {
     for (int i = 0; i < ALPHABET_SIZE; i++) {
-      children[i] = nullptr;
+      children[i] = NULL;
     }
     isEndOfWord = false;
     frequency = 0;
@@ -116,32 +116,53 @@ int main() {
     trie.insert(word);
   }
 
+  vector<string> search_history;  // Declare a vector to store search history
+
   int choice;
   do {
-  	//main Menu
-  	
     cout << "Menu:" << endl;
     cout << "1. Spell check a word" << endl;
-    cout << "2. Exit" << endl;
+    cout << "2. Get suggestions for a word" << endl;
+    cout << "3. Display search history" << endl;  // Add a new menu option for displaying search history
+    cout << "4. Exit" << endl;
     cout << "Enter your choice: ";
     cin >> choice;
 
-    if (choice == 1) {
-      // Spell check a given word and suggest words
-      string input;
-      cout << "Enter a word to spell check: ";
-      cin >> input;
-      //condition
-      if (trie.search(input)) {
-        cout << "Correct spelling" << endl;
-      } else {
-        cout << "Incorrect spelling" << endl;
+    switch (choice) {
+      case 1: {
+        cout << "Enter a word: ";
+        cin >> word;
+        if (trie.search(word)) {
+          cout << "The word is spelled correctly." << endl;
+        } else {
+          cout << "The word is spelled incorrectly." << endl;
+        }
+        search_history.push_back(word);  // Add the searched word to the search history
+        break;
       }
-      //suggestion called
-      trie.suggestWords(input);
+      case 2: {
+        cout << "Enter a prefix: ";
+        cin >> word;
+        trie.suggestWords(word);
+        search_history.push_back(word);  // Add the searched prefix to the search history
+        break;
+      }
+      case 3: {
+        // Iterate through the search history and print out each word
+        cout << "Search history:" << endl;
+        for (const string& history_word : search_history) {
+          cout << history_word << endl;
+        }
+        break;
+      }
+      case 4: {
+        break;
+      }
+      default: {
+        cout << "Invalid choice." << endl;
+      }
     }
-  } while (choice != 2);
+  } while (choice != 4);
 
   return 0;
 }
-
